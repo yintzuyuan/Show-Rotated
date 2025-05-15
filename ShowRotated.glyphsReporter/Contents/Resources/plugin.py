@@ -86,7 +86,8 @@ class ShowRotated(ReporterPlugin):
                 "it": "Ruotato",
                 "fr": "Tourné",
                 "ko": "회전",
-                "zh": "旋转",
+                "zh-Hans": "旋转",
+                "zh-Hant": "旋轉",
                 "ar": "مدور",
                 "el": "Περιστραμμένο",
                 "hi": "घुमाया हुआ",
@@ -415,6 +416,18 @@ class ShowRotated(ReporterPlugin):
     @objc.python_method
     def background(self, layer):  # def foreground(self, layer):
         if Glyphs.boolDefaults[KEY_SUPERIMPOSED]:
+            # Check if this is the active glyph
+            try:
+                # Get current glyph
+                current_glyph = Glyphs.font.selectedLayers[0].parent
+                layer_glyph = layer.parent
+                
+                # Skip if not the active glyph
+                if current_glyph != layer_glyph:
+                    return
+            except:
+                pass
+                
             self.draw_rotated(layer)
 
     def needsExtraMainOutlineDrawingInPreviewLayer_(self, layer):
@@ -423,6 +436,18 @@ class ShowRotated(ReporterPlugin):
     def drawForegroundInPreviewLayer_options_(self, layer, options):
         if not Glyphs.boolDefaults[KEY_ROTATIONSBUTTON]:
             return
+
+        # Check if this is the active glyph
+        try:
+            # Get current glyph
+            current_glyph = Glyphs.font.selectedLayers[0].parent
+            layer_glyph = layer.parent
+            
+            # Skip if not the active glyph
+            if current_glyph != layer_glyph:
+                return
+        except:
+            pass
 
         is_black = NSUserDefaults.standardUserDefaults().boolForKey_("GSPreview_Black")
 
