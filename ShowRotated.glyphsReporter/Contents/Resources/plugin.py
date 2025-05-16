@@ -416,22 +416,6 @@ class ShowRotated(ReporterPlugin):
     @objc.python_method
     def background(self, layer):  # def foreground(self, layer):
         if Glyphs.boolDefaults[KEY_SUPERIMPOSED]:
-            # Check if there is any selected layer
-            try:
-                if len(Glyphs.font.selectedLayers) == 0:
-                    return
-                    
-                # Check if this is the active glyph
-                # Get current glyph
-                current_glyph = Glyphs.font.selectedLayers[0].parent
-                layer_glyph = layer.parent
-                
-                # Skip if not the active glyph
-                if current_glyph != layer_glyph:
-                    return
-            except:
-                pass
-                
             self.draw_rotated(layer)
 
     def needsExtraMainOutlineDrawingInPreviewLayer_(self, layer):
